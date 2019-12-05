@@ -1,0 +1,7 @@
+#ifndef AOC_CONFIG_HH_
+#define AOC_CONFIG_HH_
+
+#define AOC_PROJECT_DIR "@AOC_PROJECT_DIR@"
+
+#endif
+
