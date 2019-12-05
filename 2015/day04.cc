@@ -1,11 +1,13 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 #include "trim.hh"
-
-#include <iomanip>
 
 #include <openssl/md5.h>
 
-static auto kINPUT = input_path(2015, 4);
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+
+SOLUTION(2015, 4, "117946", "3938038");
 
 const std::string digest(const std::string& msg)
 {
@@ -15,7 +17,6 @@ const std::string digest(const std::string& msg)
   std::ostringstream sout;
   sout << std::hex << std::setfill('0');
   for (auto c: result) sout << std::setw(2) << (int) c;
-
   return sout.str();
 }
 
@@ -36,30 +37,12 @@ int compute_part1(const std::string& value)
        dig[4] == '0')
     {
       found = true;
-      std::cout << value + std::to_string(count) << std::endl;
-      std::cout << dig << std::endl; 
       break;
     }
-
     count++;
-
-    /*
-    if (count % 1000 == 0)
-    {
-      std::cout << count << std::endl;
-    }
-    */
   }
   return count;
 }
-
-void part1()
-{
-  assert(compute_part1("abcdef") == 609043);
-  assert(compute_part1("pqrstuv") == 1048970);
-  std::cout << compute_part1("ckczppom") << std::endl;
-}
-
 
 int compute_part2(const std::string& value)
 {
@@ -79,35 +62,31 @@ int compute_part2(const std::string& value)
        dig[5] == '0')
     {
       found = true;
-      std::cout << value + std::to_string(count) << std::endl;
-      std::cout << dig << std::endl; 
       break;
     }
 
     count++;
-
-    /*
-    if (count % 1000 == 0)
-    {
-      std::cout << count << std::endl;
-    }
-    */
   }
   return count;
 }
 
-void part2()
+void AocSolution::test_part1()
 {
-  std::cout << compute_part2("ckczppom") << std::endl;
+  assert(compute_part1("abcdef") == 609043);
+  assert(compute_part1("pqrstuv") == 1048970);
 }
 
-int main(int argc, char** argv)
+std::string AocSolution::part1()
 {
-  part1();
-  part2();
-  return 0;
+  return std::to_string(compute_part1(trim_copy(kInput)));
 }
 
+void AocSolution::test_part2()
+{
+}
 
-
+std::string AocSolution::part2()
+{
+  return std::to_string(compute_part2(trim_copy(kInput)));
+}
 

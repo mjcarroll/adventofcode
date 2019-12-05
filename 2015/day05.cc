@@ -1,15 +1,15 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 
 #include <algorithm>
 #include <iomanip>
 
-static auto kINPUT = input_path(2015, 5);
+SOLUTION(2015, 5, "238", "69");
 
 bool nice_string(const std::string& value)
 {
   const std::string vowels= "aeiou";
 
-  auto nVowels = std::count_if(value.begin(), value.end(), 
+  auto nVowels = std::count_if(value.begin(), value.end(),
       [=](char x){
         return vowels.find(x) != std::string::npos;
       });
@@ -35,19 +35,6 @@ bool nice_string(const std::string& value)
   }
 
   return double_found;
-}
-
-void part1()
-{
-  assert(nice_string("ugknbfddgicrmopn") == true);
-  assert(nice_string("aaa") == true);
-  assert(nice_string("jchzalrnumimnmhp") == false);
-  assert(nice_string("haegwjzuvuyypxyu") == false);
-  assert(nice_string("dvszwmarrgswjxmb") == false);
-
-  auto input = read_strings(kINPUT);
-
-  std::cout << std::count_if(input.begin(), input.end(), nice_string) << std::endl;
 }
 
 bool two_pair(const std::string& value)
@@ -84,7 +71,22 @@ bool nice_string2(const std::string& value)
   return two_pair(value) && repeats(value);
 }
 
-void part2()
+void AocSolution::test_part1()
+{
+  assert(nice_string("ugknbfddgicrmopn") == true);
+  assert(nice_string("aaa") == true);
+  assert(nice_string("jchzalrnumimnmhp") == false);
+  assert(nice_string("haegwjzuvuyypxyu") == false);
+  assert(nice_string("dvszwmarrgswjxmb") == false);
+}
+
+std::string AocSolution::part1()
+{
+  auto input = split_lines(kInput);
+  return std::to_string(std::count_if(input.begin(), input.end(), nice_string));
+}
+
+void AocSolution::test_part2()
 {
   assert(two_pair("xyxy") == true);
   assert(two_pair("aabcdefgaa") == true);
@@ -98,19 +100,10 @@ void part2()
   assert(nice_string2("xxyxx") == true);
   assert(nice_string2("uurcxstgmygtbstg") == false);
   assert(nice_string2("ieodomkazucvgmuy") == false);
-
-  auto input = read_strings(kINPUT);
-
-  std::cout << std::count_if(input.begin(), input.end(), nice_string2) << std::endl;
 }
 
-int main(int argc, char** argv)
+std::string AocSolution::part2()
 {
-  part1();
-  part2();
-  return 0;
+  auto input = split_lines(kInput);
+  return std::to_string(std::count_if(input.begin(), input.end(), nice_string2));
 }
-
-
-
-

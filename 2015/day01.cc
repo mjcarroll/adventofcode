@@ -1,6 +1,6 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 
-static auto kINPUT = input_path(2015, 1);
+SOLUTION(2015, 1, "74", "1795");
 
 int compute(const std::string& input)
 {
@@ -9,12 +9,11 @@ int compute(const std::string& input)
   {
     if (val == '(')
       count++;
-    else 
+    else if (val == ')')
       count--;
   }
   return count;
 }
-
 
 int compute_pos(const std::string& input)
 {
@@ -24,7 +23,7 @@ int compute_pos(const std::string& input)
   {
     if (val == '(')
       count++;
-    else 
+    else if (val == ')')
       count--;
 
     if (count < 0)
@@ -36,8 +35,7 @@ int compute_pos(const std::string& input)
   return pos;
 }
 
-
-void part1()
+void AocSolution::test_part1()
 {
   assert(compute("(())") == 0);
   assert(compute("()()") == 0);
@@ -48,23 +46,20 @@ void part1()
   assert(compute("))(") == -1);
   assert(compute(")))") == -3);
   assert(compute(")())())") == -3);
-
-  auto input = read_string(kINPUT);
-  std::cout << compute(input) << std::endl;
 }
 
-void part2()
+std::string AocSolution::part1()
+{
+  return std::to_string(compute(kInput));
+}
+
+void AocSolution::test_part2()
 {
   assert(compute_pos(")") == 1);
   assert(compute_pos("()())") == 5);
-  auto input = read_string(kINPUT);
-  std::cout << compute_pos(input) << std::endl;
 }
 
-int main(int argc, char** argv)
+std::string AocSolution::part2()
 {
-  part1();
-  part2();
-  return 0;
+  return std::to_string(compute_pos(kInput));
 }
-

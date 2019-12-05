@@ -1,9 +1,9 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 #include "trim.hh"
 
 #include <set>
 
-static auto kINPUT = input_path(2015, 9);
+SOLUTION(2015, 9);
 
 std::string test_input = R"(London to Dublin = 464
 London to Belfast = 518
@@ -29,7 +29,11 @@ auto parse(const std::string& line)
   return r;
 }
 
-void part1()
+void AocSolution::test_part1()
+{
+}
+
+std::string AocSolution::part1()
 {
   auto lines = read_lines(kINPUT);
   std::vector<Route> routes;
@@ -45,16 +49,14 @@ void part1()
   std::cout << verts.size() << std::endl;
   std::cout << routes.size() << std::endl;
 
-
+  return "";
 }
 
-void part2()
+void AocSolution::test_part2()
 {
 }
 
-int main(int argc, char** argv)
+std::string AocSolution::part2()
 {
-  part1();
-  part2();
-  return 0;
 }
+

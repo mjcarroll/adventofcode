@@ -1,14 +1,16 @@
-add_executable(2015_day1 day1.cc)
-add_executable(2015_day2 day2.cc)
-add_executable(2015_day3 day3.cc)
-add_executable(2015_day4 day4.cc)
+### 2015
+
+register_solution(2015 01)
+register_solution(2015 02)
+register_solution(2015 03)
+register_solution(2015 04)
+register_solution(2015 05)
+register_solution(2015 06)
+register_solution(2015 07)
+register_solution(2015 08)
+#register_solution(2015 09)
+register_solution(2015 10)
+
+# Day 4 needs MD5
 find_package(OpenSSL REQUIRED)
-target_link_libraries(2015_day4 ${OPENSSL_LIBRARIES})
-
-add_executable(2015_day5 day5.cc)
-add_executable(2015_day6 day6.cc)
-add_executable(2015_day7 day7.cc)
-add_executable(2015_day8 day8.cc)
-add_executable(2015_day9 day9.cc)
-
-add_executable(2015_day10 day10.cc)
+target_link_libraries(2015_04 ${OPENSSL_LIBRARIES})

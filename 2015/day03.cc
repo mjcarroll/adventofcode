@@ -1,8 +1,6 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 
-#include <map>
-
-static auto kINPUT = input_path(2015, 3);
+SOLUTION(2015, 3, "2572", "2631");
 
 int compute_part1(const std::string& value)
 {
@@ -23,7 +21,7 @@ int compute_part1(const std::string& value)
     if(it == locations.end())
     {
       locations[current_loc] = 1;
-    } 
+    }
     else
     {
       it++;
@@ -31,16 +29,6 @@ int compute_part1(const std::string& value)
   }
 
   return locations.size();
-}
-
-void part1()
-{
-  assert(compute_part1(">") == 2);
-  assert(compute_part1("^>v<") == 4);
-  assert(compute_part1("^v^v^v^v^v") == 2);
-
-  auto input = read_string(kINPUT);
-  std::cout << compute_part1(input) << std::endl;
 }
 
 
@@ -78,7 +66,7 @@ int compute_part2(const std::string& value)
     if(it == locations.end())
     {
       locations[current_loc] = 1;
-    } 
+    }
     else
     {
       it++;
@@ -92,30 +80,32 @@ int compute_part2(const std::string& value)
     {
       current_loc2 = current_loc;
     }
-
     is_santa = !is_santa;
-
   }
 
   return locations.size();
 }
 
-void part2()
+void AocSolution::test_part1()
+{
+  assert(compute_part1(">") == 2);
+  assert(compute_part1("^>v<") == 4);
+  assert(compute_part1("^v^v^v^v^v") == 2);
+}
+
+std::string AocSolution::part1()
+{
+  return std::to_string(compute_part1(kInput));
+}
+
+void AocSolution::test_part2()
 {
   assert(compute_part2("^v") == 3);
   assert(compute_part2("^>v<") == 3);
   assert(compute_part2("^v^v^v^v^v") == 11);
-
-  auto input = read_string(kINPUT);
-  std::cout << compute_part2(input) << std::endl;
 }
 
-int main(int argc, char** argv)
+std::string AocSolution::part2()
 {
-  part1();
-  part2();
-  return 0;
+  return std::to_string(compute_part2(kInput));
 }
-
-
-

@@ -1,11 +1,17 @@
-add_executable(2019_day1 day1.cc)
-add_executable(2019_day2 day2.cc)
-add_executable(2019_day3 day3.cc)
+### 2019
 
-find_package(OpenCV REQUIRED)
+register_solution(2019 01)
+register_solution(2019 02)
+register_solution(2019 03)
+register_solution(2019 04)
+register_solution(2019 05)
+register_solution(2019 06)
 
-target_link_libraries(2019_day3 ${OpenCV_LIBRARIES})
+# IntCode Computer from 2019
+add_library(intcode int_code.cc)
+add_executable(test_int_code test_int_code.cc)
+target_link_libraries(test_int_code intcode)
 
-add_executable(2019_day4 day4.cc)
-add_executable(2019_day5 day5.cc)
-
+# Link challenges that require the intcode cpu
+target_link_libraries(2019_02 intcode)
+target_link_libraries(2019_05 intcode)

@@ -1,7 +1,7 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 #include "trim.hh"
 
-static auto kINPUT = input_path(2015, 8);
+SOLUTION(2015, 8, "1333", "2046");
 
 auto encode(const std::string& input)
 {
@@ -27,7 +27,7 @@ auto encode(const std::string& input)
   return std::make_tuple(input.size(), output.size());
 }
 
-void part1()
+void AocSolution::test_part1()
 {
   {
     auto [lit, mem] = encode(R"("")");
@@ -55,9 +55,11 @@ void part1()
     assert(lit == 35);
     assert(mem == 30);
   }
+}
 
-
-  auto input = split(read_string(kINPUT), '\n');
+std::string AocSolution::part1()
+{
+  auto input = split_lines(kInput);
 
   int lit_tot = 0;
   int mem_tot = 0;
@@ -71,7 +73,7 @@ void part1()
     mem_tot += mem;
   }
 
-  std::cout << lit_tot - mem_tot << std::endl;
+  return std::to_string(lit_tot - mem_tot);
 }
 
 auto reencode(const std::string & input) {
@@ -90,8 +92,7 @@ auto reencode(const std::string & input) {
   return std::make_tuple(input.length(), encoded.length());
 }
 
-
-void part2()
+void AocSolution::test_part2()
 {
   {
     auto [lit, mem] = reencode(R"("")");
@@ -113,8 +114,11 @@ void part2()
     assert(lit == 6);
     assert(mem == 11);
   }
+}
 
-  auto input = split(read_string(kINPUT), '\n');
+std::string AocSolution::part2()
+{
+  auto input = split_lines(kInput);
 
   int lit_tot = 0;
   int mem_tot = 0;
@@ -127,14 +131,5 @@ void part2()
     lit_tot += lit;
     mem_tot += mem;
   }
-
-  std::cout << mem_tot - lit_tot << std::endl;
-
-}
-
-int main(int argc, char** argv)
-{
-  part1();
-  part2();
-  return 0;
+  return std::to_string(mem_tot - lit_tot);
 }

@@ -1,7 +1,7 @@
-#include "aoc_common.hh"
+#include "aoc_solution.hh"
 #include "trim.hh"
 
-static auto kINPUT = input_path(2015, 10);
+SOLUTION(2015, 10, "360154", "5103798");
 
 std::string transform(const std::string& input)
 {
@@ -27,43 +27,41 @@ std::string transform(const std::string& input)
   return ret;
 }
 
-void part1()
+void AocSolution::test_part1()
 {
   assert(transform("1") == "11");
   assert(transform("11") == "21");
   assert(transform("21") == "1211");
   assert(transform("1211") == "111221");
   assert(transform("111221") == "312211");
+}
 
-  std::string input = trim_copy(read_string(kINPUT));
+std::string AocSolution::part1()
+{
+  std::string input = trim_copy(kInput);
   std::string output;
 
-  std::cout << input << std::endl;
   for (size_t ii = 0; ii < 40; ii++)
   {
     output = transform(input);
     input = output;
-    std::cout << output.length() << std::endl;
   }
+  return std::to_string(output.length());
 }
 
-void part2()
+void AocSolution::test_part2()
 {
-  std::string input = trim_copy(read_string(kINPUT));
+}
+
+std::string AocSolution::part2()
+{
+  std::string input = trim_copy(kInput);
   std::string output;
 
-  std::cout << input << std::endl;
   for (size_t ii = 0; ii < 50; ii++)
   {
     output = transform(input);
     input = output;
-    std::cout << output.length() << std::endl;
   }
-}
-
-int main(int argc, char** argv)
-{
-  part1();
-  part2();
-  return 0;
+  return std::to_string(output.length());
 }
