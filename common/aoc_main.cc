@@ -41,6 +41,21 @@ BaseSolution::BaseSolution(
 
 int main(int argc, char ** argv)
 {
+  std::vector<std::string> args;
+  for (size_t ii = 0; ii < argc; ++ii)
+  {
+    args.push_back(std::string(argv[ii]));
+  }
+
+  auto find_arg = [&](auto arg){
+    return std::find(args.begin(), args.end(), arg) != args.end();
+  };
+
+  if (find_arg("-d"))
+  {
+    spdlog::set_level(spdlog::level::debug);
+  }
+
   spdlog::set_pattern("%v");
   auto solution = AocSolution();
   spdlog::info("{}/{:02}", solution.year, solution.day);
