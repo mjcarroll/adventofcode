@@ -12,6 +12,7 @@ register_solution(2015 08)
 register_solution(2015 10)
 #register_solution(2015 11)
 register_solution(2015 12)
+register_solution(2015 13)
 
 # Day 4 needs MD5
 find_package(OpenSSL REQUIRED)
