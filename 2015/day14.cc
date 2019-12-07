@@ -2,7 +2,7 @@
 
 #include "spdlog/spdlog.h"
 
-SOLUTION(2015, 14, "2696");
+SOLUTION(2015, 14, "2696", "1084");
 
 std::string test_input = R"(Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
 Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.)";
@@ -53,6 +53,42 @@ void propagate(std::vector<Deer>& deer, int t)
   }
 }
 
+int calc_lead(std::vector<Deer>& deer, int t)
+{
+  std::map<std::string, int> lead;
+  for (size_t ii = 0; ii < t; ++ii)
+  {
+    propagate(deer, 1);
+    int max = 0;
+    std::string max_name;
+    for (auto d: deer)
+    {
+      if (d.pos > max) {
+        max = d.pos;
+        max_name = d.name;
+      }
+    }
+
+    for (auto d: deer)
+    {
+      if (d.pos == max)
+      {
+        lead[d.name] += 1;
+      }
+    }
+  }
+
+  int max = 0;
+  std::string max_name;
+  for (auto [name, score] : lead) {
+    spdlog::debug("{}: {}", name, score);
+    if (score > max) {
+      max = score;
+      max_name = name;
+    }
+  }
+  return max;
+}
 
 void AocSolution::test_part1()
 {
@@ -96,7 +132,6 @@ void AocSolution::test_part1()
 std::string AocSolution::part1()
 {
   auto input = split_lines(kInput);
-
   auto deer = map(input, parse);
   propagate(deer, 2503);
 
@@ -114,9 +149,14 @@ std::string AocSolution::part1()
 
 void AocSolution::test_part2()
 {
+  auto input = split_lines(test_input);
+  auto deer = map(input, parse);
+  assert(calc_lead(deer, 1000) == 689);
 }
 
 std::string AocSolution::part2()
 {
-  return "";
+  auto input = split_lines(kInput);
+  auto deer = map(input, parse);
+  return std::to_string(calc_lead(deer, 2503));
 }
