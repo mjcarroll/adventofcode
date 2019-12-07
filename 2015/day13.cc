@@ -2,7 +2,7 @@
 
 #include "spdlog/spdlog.h"
 
-SOLUTION(2015, 13, "733");
+SOLUTION(2015, 13, "733", "725");
 
 std::string test_input = R"(Alice would gain 54 happiness units by sitting next to Bob.
 Alice would lose 79 happiness units by sitting next to Carol.
@@ -119,5 +119,23 @@ void AocSolution::test_part2()
 
 std::string AocSolution::part2()
 {
-  return "";
+  auto input = split_lines(kInput);
+  auto vals = map(input, parse);
+  std::map<std::pair<std::string,std::string>,int> people;
+  std::set<std::string> names;
+
+  for (auto [prime, second, val] : vals)
+  {
+    people[std::make_pair(prime,second)] = val;
+    names.insert(prime);
+    names.insert(second);
+  }
+
+  for (auto name : names)
+  {
+    people[std::make_pair("me",name)] = 0;
+  }
+  names.insert("me");
+
+  return std::to_string(solve(people, names));
 }
