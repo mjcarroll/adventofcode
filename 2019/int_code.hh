@@ -65,18 +65,21 @@ class IntCodeCpu
     void SetMemory(size_t index, int value);
     int GetMemory(size_t index) const;
     void SetInput(int input);
-    int GetOutput() const;
+    int GetOutput();
     void Execute();
     void Reset();
 
-  private:
     int get_param(const ParamMode& mode, int arg);
 
     // Instruction pointer
     size_t instPointer { 0 };
     bool running { true };
+    bool paused { false };
 
+    bool inputSet { false };
     int programInput { 0 };
+
+    bool outputSet { false };
     int programOutput { 0 };
 
     // Store original program for reset

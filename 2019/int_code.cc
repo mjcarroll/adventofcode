@@ -1,5 +1,7 @@
 #include "int_code.hh"
 
+#include <iostream>
+
 Instruction::Instruction(int instruction)
 {
   auto mode_a = instruction/10000 == 1;
@@ -39,17 +41,32 @@ int IntCodeCpu::GetMemory(size_t index) const {
 }
 
 void IntCodeCpu::SetInput(int input) {
+  inputSet = true;
+  paused = false;
   programInput = input;
 }
 
-int IntCodeCpu::GetOutput() const {
+int IntCodeCpu::GetOutput() {
+  outputSet = false;
   return programOutput;
 }
 
 void IntCodeCpu::Execute() {
+  if (paused) {
+    std::cerr << "Tried to execute while paused!" << std::endl;
+    return;
+  }
+
   while(running)
   {
     auto instruction = Instruction(memory[instPointer]);
+
+    if (instruction.op == OpCode::IN && !inputSet)
+    {
+      paused = true;
+      return;
+    }
+
     auto param1 = get_param(instruction.param1, instPointer + 1);
     auto param2 = get_param(instruction.param2, instPointer + 2);
     auto param3 = get_param(instruction.param3, instPointer + 3);
@@ -64,9 +81,11 @@ void IntCodeCpu::Execute() {
         break;
       case OpCode::IN:
         memory[param1] = programInput;
+        inputSet = false;
         break;
       case OpCode::OUT:
         programOutput = memory[param1];
+        outputSet = true;
         break;
       case OpCode::JIT:
         if (memory[param1]) {
@@ -101,7 +120,10 @@ void IntCodeCpu::Execute() {
 void IntCodeCpu::Reset() {
   instPointer = 0;
   running = true;
+  paused = false;
+  inputSet = false;
   programInput = 0;
+  outputSet = false;
   programOutput = 0;
   memory = {program.begin(), program.end()};
 }

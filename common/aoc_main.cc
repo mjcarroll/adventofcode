@@ -63,7 +63,7 @@ int main(int argc, char ** argv)
   auto check = "\U00002714";
   auto cross = "\U0000274E";
 
-  std::string val = "?";
+  std::string val = "";
   std::string sol = "";
 
   auto delta1 = std::chrono::duration_cast<std::chrono::microseconds>(p1end-p1start).count();
@@ -72,6 +72,7 @@ int main(int argc, char ** argv)
     sol = fmt::format("{} == {}", part1, solution.part1_answer);
   } else {
     sol = part1;
+    val = "?";
   }
   spdlog::info("Part1: {:<30}{:>10}{:>10} micros", sol,val,delta1);
 
@@ -81,6 +82,7 @@ int main(int argc, char ** argv)
     sol = fmt::format("{} == {}", part2, solution.part2_answer);
   } else {
     sol = part2;
+    val = "?";
   }
   spdlog::info("Part2: {:<30}{:>10}{:>10} micros", sol,val,delta2);
 
