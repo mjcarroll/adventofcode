@@ -4,7 +4,7 @@
 
 #include <set>
 
-SOLUTION(2015, 9, "117");
+SOLUTION(2015, 9, "117", "909");
 
 std::string test_input = R"(London to Dublin = 464
 London to Belfast = 518
@@ -36,7 +36,7 @@ auto unique_verts(const std::vector<Route>& routes)
   return verts;
 }
 
-int solve(const std::vector<Route> & routes)
+auto solve(const std::vector<Route> & routes)
 {
   auto verts = unique_verts(routes);
   auto permVerts = std::vector<std::string>(verts.begin(), verts.end());
@@ -71,39 +71,42 @@ int solve(const std::vector<Route> & routes)
   };
 
   int min = 1e6;
+  int max = 0;
   do {
     auto routeCost = cost(permVerts);
     spdlog::debug("{} {} {}", permVerts[0], permVerts.back(), routeCost);
-    if (routeCost < min)
-    {
-      min = routeCost;
-    }
+
+    min = std::min(min, routeCost);
+    max = std::max(max, routeCost);
   } while (std::next_permutation(permVerts.begin(), permVerts.end()));
 
-  return min;
+  return std::make_pair(min, max);
 }
 
 void AocSolution::test_part1()
 {
   auto lines = split_lines(test_input);
   auto routes = map(lines, parse);
-  assert(solve(routes) == 605);
+  assert(solve(routes).first == 605);
 }
 
 std::string AocSolution::part1()
 {
   auto lines = split_lines(kInput);
   auto routes = map(lines, parse);
-
-  return std::to_string(solve(routes));
+  return std::to_string(solve(routes).first);
 }
 
 void AocSolution::test_part2()
 {
+  auto lines = split_lines(test_input);
+  auto routes = map(lines, parse);
+  assert(solve(routes).second == 982);
 }
 
 std::string AocSolution::part2()
 {
-  return "";
+  auto lines = split_lines(kInput);
+  auto routes = map(lines, parse);
+  return std::to_string(solve(routes).second);
 }
-
