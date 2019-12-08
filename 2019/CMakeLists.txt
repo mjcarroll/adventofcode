@@ -7,6 +7,7 @@ register_solution(2019 04)
 register_solution(2019 05)
 register_solution(2019 06)
 register_solution(2019 07)
+register_solution(2019 08)
 
 # IntCode Computer from 2019
 add_library(intcode int_code.cc)
