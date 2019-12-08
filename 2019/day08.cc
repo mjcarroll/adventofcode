@@ -2,7 +2,7 @@
 
 #include "spdlog/spdlog.h"
 
-SOLUTION(2019, 8, "2562");
+SOLUTION(2019, 8, "2562", "ZFLBY");
 
 using Row = std::vector<int>;
 using Layer = std::vector<Row>;
@@ -28,6 +28,7 @@ auto compute_layers(const std::string& input, int width, int height)
   auto layers = std::vector<Layer>();
   auto cur_layer = Layer();
   auto cur_row = Row();
+
   for(size_t ii = 0; ii < input.size(); ++ii)
   {
     if (cur_row.size() == width)
@@ -44,15 +45,18 @@ auto compute_layers(const std::string& input, int width, int height)
     cur_row.push_back(static_cast<int>(input[ii] -'0'));
   }
 
+  cur_layer.push_back(cur_row);
+  layers.push_back(cur_layer);
+
   return layers;
 }
 
-void print_layer(const Layer& layer)
+void print_layer(const Layer& layer, int width=25, int height=6)
 {
   for (auto row: layer)
   {
     std::string str;
-    for (size_t ii = 0; ii < 25; ++ii)
+    for (size_t ii = 0; ii < width; ++ii)
     {
       str += std::to_string(row[ii]);
     }
@@ -63,12 +67,6 @@ void print_layer(const Layer& layer)
 std::string AocSolution::part1()
 {
   auto layers = compute_layers(kInput, 25, 6);
-
-  for (auto layer: layers)
-  {
-    print_layer(layer);
-    spdlog::debug("");
-  }
 
   int min = 1e6;
   size_t minIdx = -1;
@@ -87,9 +85,69 @@ std::string AocSolution::part1()
 
 void AocSolution::test_part2()
 {
+  auto layers = compute_layers("0222112222120000", 2, 2);
+  auto output = layers[0];
+
+  for (size_t layer = 0; layer < layers.size(); ++layer)
+  {
+    print_layer(layers[layer], 2, 2);
+    for (size_t row = 0; row < 2; ++row)
+    {
+      for (size_t column = 0; column < 2; ++column)
+      {
+        if (output[row][column] == 2)
+        {
+          output[row][column] = layers[layer][row][column];
+        }
+      }
+    }
+  }
+
+  assert(output[0][0] == 0);
+  assert(output[0][1] == 1);
+  assert(output[1][0] == 1);
+  assert(output[1][1] == 0);
 }
 
 std::string AocSolution::part2()
 {
-  return "";
+  auto layers = compute_layers(kInput, 25, 6);
+
+  auto output = layers[0];
+  for (size_t layer = 1; layer < layers.size(); ++layer)
+  {
+    for (size_t row = 0; row < 6; ++row)
+    {
+      for (size_t column = 0; column < 25; ++column)
+      {
+        if (output[row][column] == 2)
+        {
+          output[row][column] = layers[layer][row][column];
+        }
+      }
+    }
+  }
+
+  std::string ret = "";
+  for (auto row: output)
+  {
+    for (auto col: row)
+    {
+      ret += col == 1 ? "#" : " ";
+    }
+    ret += '\n';
+  }
+
+
+  spdlog::info(ret);
+
+/*
+ * #### #### #    ###  #   #
+ *    # #    #    #  # #   #
+ *   #  ###  #    ###   # # 
+ *  #   #    #    #  #   #  
+ * #    #    #    #  #   #  
+ * #### #    #### ###    #  
+ */
+  return "ZFLBY";
 }
