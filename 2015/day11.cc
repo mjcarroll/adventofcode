@@ -3,7 +3,7 @@
 
 #include "spdlog/spdlog.h"
 
-SOLUTION(2015, 11, "vzbxxyzz");
+SOLUTION(2015, 11, "vzbxxyzz", "vzcaabcc");
 
 std::string increment(const std::string& input)
 {
@@ -140,10 +140,17 @@ std::string AocSolution::part1()
 
 void AocSolution::test_part2()
 {
-
 }
 
 std::string AocSolution::part2()
 {
-  return "";
+  auto password = std::string("vzbxxyzz");
+  password = increment(password);
+
+  while(!passes(password))
+  {
+    password = increment(password);
+  }
+
+  return password;
 }
