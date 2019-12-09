@@ -2,7 +2,7 @@
 
 #include "int_code.hh"
 
-SOLUTION(2019, 9, "2453265701");
+SOLUTION(2019, 9, "2453265701", "80805");
 
 void AocSolution::test_part1()
 {
@@ -44,5 +44,9 @@ void AocSolution::test_part2()
 
 std::string AocSolution::part2()
 {
-  return "";
+  auto input = split_longs(kInput);
+  auto cpu = IntCodeCpu(input);
+  cpu.SetInput(2);
+  cpu.Execute();
+  return std::to_string(cpu.GetOutput());
 }
