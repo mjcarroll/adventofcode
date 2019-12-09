@@ -72,8 +72,20 @@ void day5pt2() {
   }
 }
 
+void day7() {
+  // From day 7, adding relative 
+  {
+    auto ins = Instruction(21101);
+    assert(ins.op == OpCode::ADD);
+    assert(ins.param1 == ParamMode::IMMEDIATE);
+    assert(ins.param2 == ParamMode::IMMEDIATE);
+    assert(ins.param3 == ParamMode::RELATIVE);
+  }
+}
+
 int main(int argc, char** argv)
 {
   day5pt1();
   day5pt2();
+  day7();
 }

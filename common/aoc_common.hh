@@ -41,4 +41,7 @@ split_lines(const std::string& input);
 std::vector<int>
 split_ints(const std::string& input);
 
+std::vector<long>
+split_longs(const std::string& input);
+
 #endif

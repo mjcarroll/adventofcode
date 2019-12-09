@@ -1,14 +1,15 @@
 #include "int_code.hh"
+#include "spdlog/spdlog.h"
 
 #include <iostream>
 
 Instruction::Instruction(int instruction)
 {
-  auto mode_a = instruction/10000 == 1;
+  auto mode_a = instruction/10000;
   instruction -= mode_a * 10000;
-  auto mode_b = instruction/1000 == 1;
+  auto mode_b = instruction/1000;
   instruction -= mode_b * 1000;
-  auto mode_c = instruction/100 == 1;
+  auto mode_c = instruction/100;
   instruction -= mode_c * 100;
 
   op = static_cast<OpCode>(instruction);
@@ -17,7 +18,7 @@ Instruction::Instruction(int instruction)
   param3 = static_cast<ParamMode>(mode_a);
 }
 
-Instruction::Instruction(int opcode, bool mode_c, bool mode_b, bool mode_a):
+Instruction::Instruction(int opcode, int mode_c, int mode_b, int mode_a):
     op {static_cast<OpCode>(opcode)},
     param1 {static_cast<ParamMode>(mode_c)},
     param2 {static_cast<ParamMode>(mode_b)},
@@ -27,26 +28,40 @@ Instruction::Instruction(int opcode, bool mode_c, bool mode_b, bool mode_a):
 IntCodeCpu::IntCodeCpu() = default;
 
 IntCodeCpu::IntCodeCpu(const std::vector<int> & program):
-  program(program),
-  memory(program)
+  program(program.begin(), program.end()),
+  memory(10000,0)
 {
+  for (size_t ii = 0; ii < program.size(); ++ii)
+  {
+    memory[ii] = program[ii];
+  }
 }
 
-void IntCodeCpu::SetMemory(size_t index, int value) {
+IntCodeCpu::IntCodeCpu(const std::vector<long> & program):
+  program(program),
+  memory(10000,0)
+{
+  for (size_t ii = 0; ii < program.size(); ++ii)
+  {
+    memory[ii] = program[ii];
+  }
+}
+
+void IntCodeCpu::SetMemory(size_t index, long value) {
   memory[index] = value;
 }
 
-int IntCodeCpu::GetMemory(size_t index) const {
+long IntCodeCpu::GetMemory(size_t index) const {
   return memory[index];
 }
 
-void IntCodeCpu::SetInput(int input) {
+void IntCodeCpu::SetInput(long input) {
   inputSet = true;
   paused = false;
   programInput = input;
 }
 
-int IntCodeCpu::GetOutput() {
+long IntCodeCpu::GetOutput() {
   outputSet = false;
   return programOutput;
 }
@@ -70,6 +85,17 @@ void IntCodeCpu::Execute() {
     auto param1 = get_param(instruction.param1, instPointer + 1);
     auto param2 = get_param(instruction.param2, instPointer + 2);
     auto param3 = get_param(instruction.param3, instPointer + 3);
+
+    /*
+    spdlog::debug("{} {}: {} ({}) {} ({}) {} ({})",
+        memory[instPointer],
+        kInsName[instruction.op],
+        param1, memory[param1],
+        param2, memory[param2],
+        param2, memory[param3]
+    );
+    */
+
     bool jump = false;
 
     switch(instruction.op) {
@@ -86,6 +112,7 @@ void IntCodeCpu::Execute() {
       case OpCode::OUT:
         programOutput = memory[param1];
         outputSet = true;
+        spdlog::debug("{}", programOutput);
         break;
       case OpCode::JIT:
         if (memory[param1]) {
@@ -104,6 +131,9 @@ void IntCodeCpu::Execute() {
         break;
       case OpCode::EQ:
         memory[param3] = memory[param1] == memory[param2];
+        break;
+      case OpCode::REL:
+        relativeBase += memory[param1];
         break;
       case OpCode::TERM:
         running = false;
@@ -128,7 +158,20 @@ void IntCodeCpu::Reset() {
   memory = {program.begin(), program.end()};
 }
 
-int IntCodeCpu::get_param(const ParamMode& mode, int arg)
+long IntCodeCpu::get_param(const ParamMode& mode, long arg)
 {
-  return mode == ParamMode::POSITION ? memory[arg] : arg;
+  long ret = 0;
+  switch(mode) {
+    case ParamMode::IMMEDIATE:
+      ret = arg;
+      break;
+    case ParamMode::POSITION:
+      ret = memory[arg];
+      break;
+    case ParamMode::RELATIVE:
+      ret = relativeBase + memory[arg];
+      break;
+  }
+  return ret;
 }
+

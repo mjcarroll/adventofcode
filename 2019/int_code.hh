@@ -13,12 +13,14 @@ enum class OpCode {
   JIF = 6,
   LT = 7,
   EQ = 8,
+  REL = 9,
   TERM = 99
 };
 
 enum class ParamMode {
   POSITION = 0,
-  IMMEDIATE = 1
+  IMMEDIATE = 1,
+  RELATIVE = 2,
 };
 
 static std::map<OpCode, std::string> kInsName =
@@ -31,6 +33,7 @@ static std::map<OpCode, std::string> kInsName =
   { OpCode::JIF, "Jump if False" },
   { OpCode::LT, "Less Than" },
   { OpCode::EQ, "Equal" },
+  { OpCode::REL, "Relative Base" },
   { OpCode::TERM, "Terminate" }
 };
 
@@ -44,6 +47,7 @@ static std::map<OpCode, size_t> kInsSize =
   { OpCode::JIF, 3 },
   { OpCode::LT, 4 },
   { OpCode::EQ, 4 },
+  { OpCode::REL, 2 },
   { OpCode::TERM, 0 }
 };
 
@@ -54,7 +58,7 @@ struct Instruction {
   ParamMode param3 {ParamMode::IMMEDIATE};
 
   Instruction(int instruction);
-  Instruction(int opcode, bool mode_c, bool mode_b, bool mode_a);
+  Instruction(int opcode, int mode_c, int mode_b, int mode_a);
 };
 
 class IntCodeCpu
@@ -62,31 +66,35 @@ class IntCodeCpu
   public:
     IntCodeCpu();
     IntCodeCpu(const std::vector<int> & program);
-    void SetMemory(size_t index, int value);
-    int GetMemory(size_t index) const;
-    void SetInput(int input);
-    int GetOutput();
+    IntCodeCpu(const std::vector<long> & program);
+
+    void SetMemory(size_t index, long value);
+    long GetMemory(size_t index) const;
+    void SetInput(long input);
+    long GetOutput();
     void Execute();
     void Reset();
 
-    int get_param(const ParamMode& mode, int arg);
+    long get_param(const ParamMode& mode, long arg);
 
     // Instruction pointer
     size_t instPointer { 0 };
+    long relativeBase {0};
+
     bool running { true };
     bool paused { false };
 
     bool inputSet { false };
-    int programInput { 0 };
+    long programInput { 0 };
 
     bool outputSet { false };
-    int programOutput { 0 };
+    long programOutput { 0 };
 
     // Store original program for reset
-    std::vector<int> program;
+    std::vector<long> program;
 
     // Mutable working memory
-    std::vector<int> memory;
+    std::vector<long> memory;
 };
 
 #endif

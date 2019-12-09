@@ -12,6 +12,16 @@ register_solution(2019 09)
 
 # IntCode Computer from 2019
 add_library(intcode int_code.cc)
+target_include_directories(
+  intcode
+  PUBLIC
+  ${CMAKE_BINARY_DIR}/spdlog/include
+)
+target_link_libraries(intcode
+  PUBLIC
+  spdlog::spdlog
+)
+
 add_executable(test_int_code test_int_code.cc)
 target_link_libraries(test_int_code intcode)
 

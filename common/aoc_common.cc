@@ -35,9 +35,19 @@ int toInt(const std::string& val) {
   return atoi(val.c_str());
 }
 
+long toLong(const std::string& val) {
+  return atol(val.c_str());
+}
+
 std::vector<int>
 split_ints(const std::string& input)
 {
   return map(split_string(input, ','), toInt);
+}
+
+std::vector<long>
+split_longs(const std::string& input)
+{
+  return map(split_string(input, ','), toLong);
 }
 
