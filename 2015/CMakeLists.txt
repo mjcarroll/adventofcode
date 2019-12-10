@@ -18,6 +18,7 @@ register_solution(2015 15)
 register_solution(2015 16)
 register_solution(2015 17)
 register_solution(2015 18)
+register_solution(2015 19)
 register_solution(2015 20)
 
 # Day 4 needs MD5
