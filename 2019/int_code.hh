@@ -5,15 +5,15 @@
 #include <vector>
 
 enum class OpCode {
-  ADD = 1,
+  ADD  = 1,
   MULT = 2,
-  IN = 3,
-  OUT = 4,
-  JIT = 5,
-  JIF = 6,
-  LT = 7,
-  EQ = 8,
-  REL = 9,
+  IN   = 3,
+  OUT  = 4,
+  JIT  = 5,
+  JIF  = 6,
+  LT   = 7,
+  EQ   = 8,
+  REL  = 9,
   TERM = 99
 };
 
@@ -57,7 +57,7 @@ struct Instruction {
   ParamMode param2 {ParamMode::IMMEDIATE};
   ParamMode param3 {ParamMode::IMMEDIATE};
 
-  Instruction(int instruction);
+  Instruction(long instruction);
   Instruction(int opcode, int mode_c, int mode_b, int mode_a);
 };
 
@@ -65,13 +65,12 @@ class IntCodeCpu
 {
   public:
     IntCodeCpu();
-    IntCodeCpu(const std::vector<int> & program);
     IntCodeCpu(const std::vector<long> & program);
 
     void SetMemory(size_t index, long value);
     long GetMemory(size_t index) const;
     void SetInput(long input);
-    long GetOutput();
+    std::vector<long> GetOutput();
     void Execute();
     void Reset();
 
@@ -87,8 +86,7 @@ class IntCodeCpu
     bool inputSet { false };
     long programInput { 0 };
 
-    bool outputSet { false };
-    long programOutput { 0 };
+    std::vector<long> programOutput;
 
     // Store original program for reset
     std::vector<long> program;

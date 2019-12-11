@@ -33,16 +33,16 @@ void day5pt2() {
   {
     // Using position mode, consider whether the input is equal to 8;
     // output 1 (if it is) or 0 (if it is not).
-    std::vector<int> program = {3,9,8,9,10,9,4,9,99,-1,8};
+    std::vector<long> program = {3,9,8,9,10,9,4,9,99,-1,8};
     IntCodeCpu cpu(program);
     cpu.SetInput(8);
     cpu.Execute();
-    assert(cpu.GetOutput() == 1);
+    assert(cpu.GetOutput()[0] == 1);
 
     cpu.Reset();
     cpu.SetInput(9);
     cpu.Execute();
-    assert(cpu.GetOutput() == 0);
+    assert(cpu.GetOutput()[0] == 0);
   }
 
   {
@@ -50,7 +50,7 @@ void day5pt2() {
     // The program will then output 999 if the input value is below 8,
     // output 1000 if the input value is equal to 8, or
     // output 1001 if the input value is greater than 8.
-    std::vector<int> program = {
+    std::vector<long> program = {
       3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
       1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
       999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99};
@@ -58,22 +58,22 @@ void day5pt2() {
     IntCodeCpu cpu(program);
     cpu.SetInput(8);
     cpu.Execute();
-    assert(cpu.GetOutput() == 1000);
+    assert(cpu.GetOutput()[0] == 1000);
 
     cpu.Reset();
     cpu.SetInput(7);
     cpu.Execute();
-    assert(cpu.GetOutput() == 999);
+    assert(cpu.GetOutput()[0] == 999);
 
     cpu.Reset();
     cpu.SetInput(9);
     cpu.Execute();
-    assert(cpu.GetOutput() == 1001);
+    assert(cpu.GetOutput()[0] == 1001);
   }
 }
 
 void day7() {
-  // From day 7, adding relative 
+  // From day 7, adding relative
   {
     auto ins = Instruction(21101);
     assert(ins.op == OpCode::ADD);

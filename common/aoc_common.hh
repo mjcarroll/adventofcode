@@ -27,6 +27,37 @@ auto sum(const Container& container) {
   return std::accumulate(container.begin(), container.end(), 0);
 }
 
+template <typename T>
+auto make_grid(size_t rows, size_t cols, T init_val)
+{
+  std::vector<std::vector<T>> grid;
+  for(size_t ii = 0; ii < rows; ++ii)
+  {
+    grid.push_back(std::vector<T>(cols, init_val));
+  }
+  return grid;
+}
+
+template<typename T, typename Function>
+auto display_grid(const std::vector<std::vector<T>>& grid,
+                  Function cellOperation)
+{
+  std::string ret;
+  size_t rr = 0;
+  for (auto row: grid)
+  {
+    size_t cc = 0;
+    for (auto col: row)
+    {
+      ret += cellOperation(col, rr, cc);
+      cc++;
+    }
+    rr++;
+    ret += '\n';
+  }
+  return ret;
+}
+
 int toInt(const std::string& str);
 
 std::string

@@ -56,20 +56,34 @@ int main(int argc, char ** argv)
     spdlog::set_level(spdlog::level::debug);
   }
 
+  bool p1_only = false;
+  if (find_arg("-p1"))
+  {
+    p1_only = true;
+  }
+
+  bool p2_only = false;
+  if (find_arg("-p2"))
+  {
+    p2_only = true;
+  }
+
   spdlog::set_pattern("%v");
   auto solution = AocSolution();
   spdlog::info("{}/{:02}", solution.year, solution.day);
 
+  std::string part1, part2;
   solution.test_part1();
-
   auto p1start = std::chrono::steady_clock::now();
-  auto part1 = solution.part1();
+  if (!p2_only)
+    part1 = solution.part1();
   auto p1end = std::chrono::steady_clock::now();
 
   solution.test_part2();
 
   auto p2start = std::chrono::steady_clock::now();
-  auto part2 = solution.part2();
+  if (!p1_only)
+    part2 = solution.part2();
   auto p2end = std::chrono::steady_clock::now();
 
   auto part1_right = true;

@@ -35,7 +35,9 @@ std::string AocSolution::part1()
   auto cpu = IntCodeCpu(input);
   cpu.SetInput(1);
   cpu.Execute();
-  return std::to_string(cpu.GetOutput());
+  auto output = cpu.GetOutput();
+  assert(output.size() == 1);
+  return std::to_string(output[0]);
 }
 
 void AocSolution::test_part2()
@@ -48,5 +50,7 @@ std::string AocSolution::part2()
   auto cpu = IntCodeCpu(input);
   cpu.SetInput(2);
   cpu.Execute();
-  return std::to_string(cpu.GetOutput());
+  auto output = cpu.GetOutput();
+  assert(output.size() == 1);
+  return std::to_string(output[0]);
 }
