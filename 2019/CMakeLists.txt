@@ -12,6 +12,7 @@ register_solution(2019 09)
 register_solution(2019 10)
 register_solution(2019 11)
 register_solution(2019 12)
+register_solution(2019 13)
 
 # IntCode Computer from 2019
 add_library(intcode int_code.cc)
@@ -34,4 +35,4 @@ target_link_libraries(2019_05 intcode)
 target_link_libraries(2019_07 intcode)
 target_link_libraries(2019_09 intcode)
 target_link_libraries(2019_11 intcode)
-
+target_link_libraries(2019_13 intcode)
